@@ -191,7 +191,6 @@ equalBtn.addEventListener("click", () => {
 
 document.addEventListener("keydown", (event) => {
   let key = event.key;
-  console.log(key);
   if (
     key === "1" ||
     key === "2" ||
