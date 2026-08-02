@@ -1,0 +1,171 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: grey;
+}
+
+.container {
+    padding: 2rem 1rem 2rem;
+    background-color: #3a3c3d;
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.6);
+    width: 24%;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; */
+}
+
+p {
+    height: 1rem;
+    font-size: 1rem;
+    text-align: end;
+    padding-right: 1rem;
+    color: white;
+}
+
+input {
+    width: 100%;
+    background: transparent;
+    text-align: end;
+    padding: 0.6rem;
+    font-size: 2rem;
+    /* border-radius: 1rem; */
+    border: none;
+    outline: none;
+    color: white;
+}
+
+.cal-container {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 1rem;
+}
+
+button {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    background-color: #4B4C49;
+    border: none;
+    box-shadow: 1rem 1rem 1rem rgba(0, 0, 0, 0.6);
+    font-size: 1.5rem;
+    transition: transform 1s ease-in-out;
+    cursor: pointer;
+    color: white;
+}
+
+.cal-container button:active {
+    transform: scale(0.5);
+}
+
+.cal-container .ac-btn {
+    background-color: rgb(255, 38, 0);
+}
+
+.divide-btn, 
+.mul-btn, 
+.sub-btn,
+.add-btn,
+.equal-btn {
+    background-color: rgb(252, 74, 9);
+}
+
+.cal-container .backspace-btn {
+    padding: 6px 4px 0 0;
+}
+
+.cal-container .dot-btn {
+    font-size: 0.5rem;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav {
+    margin-bottom: 1rem;
+}
+
+.themes button, nav, .themes i {
+    background: transparent;
+    color: yellow;
+}
+
+.themes button {
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    border: 1px solid black;
+    box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.6);
+    transition: all 1s ease-in-out;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.themes button:active {
+    transform: scale(0.7);
+}
+
+
+.light {
+    background-color: #fff;
+    color: black;
+}
+
+@media (max-width: 1200px) {
+    .container {
+        width: 32%;
+    }
+}
+
+@media (max-width: 992px) {
+    .container {
+        width: 36%;
+    }
+}
+
+@media (max-width: 860px) {
+    .container {
+        width: 40%;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 48%;
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 54%;
+    }
+}
+
+@media (max-width: 640px) {
+    .container {
+        width: 60%;
+    }
+}
+
+@media (max-width: 490px) {
+    .container {
+        width: 80%;
+    }
+}
