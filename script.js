@@ -74,7 +74,7 @@ acBtn.addEventListener("click", () => {
   para.innerText = "";
 });
 
-backspaceBtn.addEventListener("click", () => {
+function backspace() {
   let delchar = displayInput[displayInput.length - 1];
   currentInput = currentInput.slice(0, -1);
   displayInput = displayInput.slice(0, -1);
@@ -98,6 +98,10 @@ backspaceBtn.addEventListener("click", () => {
     previousInput = "";
     operator = null;
   }
+}
+
+backspaceBtn.addEventListener("click", () => {
+  backspace();
 });
 
 // Operator button
@@ -191,7 +195,6 @@ equalBtn.addEventListener("click", () => {
 
 document.addEventListener("keydown", (event) => {
   let key = event.key;
-  console.log(key);
   if (
     key === "1" ||
     key === "2" ||
@@ -233,29 +236,7 @@ document.addEventListener("keydown", (event) => {
     }
     decimal = false;
   } else if (key === "Backspace") {
-    let delchar = displayInput[displayInput.length - 1];
-    currentInput = currentInput.slice(0, -1);
-    displayInput = displayInput.slice(0, -1);
-    input.value = displayInput;
-    for (let char of currentInput) {
-      if (char === ".") {
-        decimal = false;
-        break;
-      } else {
-        decimal = true;
-      }
-    }
-    if (
-      delchar === "%" ||
-      delchar === "/" ||
-      delchar === "*" ||
-      delchar === "-" ||
-      delchar === "+"
-    ) {
-      currentInput = previousInput;
-      previousInput = "";
-      operator = null;
-    }
+    backspace();
   } else if (key === "Enter") {
     let num1 = Number(previousInput);
     let num2 = Number(currentInput);
