@@ -39,19 +39,28 @@ document.querySelectorAll(".number-btn").forEach((btn) => {
   });
 });
 
-zeroBtn.addEventListener("click", () => {
+
+const zeroFun = () => {
   if (currentInput !== "0") {
     handleNumber("0");
   }
+}
+
+zeroBtn.addEventListener("click", () => {
+  zeroFun();
 });
 
-dblZeroBtn.addEventListener("click", () => {
+const dubleZeroFun = () => {
   if (currentInput !== "" && currentInput !== "0") {
     handleNumber("00");
   }
+}
+
+dblZeroBtn.addEventListener("click", () => {
+  dubleZeroFun();
 });
 
-dotBtn.addEventListener("click", () => {
+const dotFun = () => {
   if (decimal) {
     if (currentInput === "") {
       handleNumber("0.");
@@ -60,11 +69,16 @@ dotBtn.addEventListener("click", () => {
     }
   }
   decimal = false;
+}
+
+dotBtn.addEventListener("click", () => {
+  dotFun();
 });
 
 // Special button
 
-acBtn.addEventListener("click", () => {
+
+const allClear = () => {
   currentInput = "";
   previousInput = "";
   decimal = true;
@@ -72,6 +86,10 @@ acBtn.addEventListener("click", () => {
   operator = null;
   display(displayInput);
   para.innerText = "";
+}
+
+acBtn.addEventListener("click", () => {
+  allClear();
 });
 
 function backspace() {
@@ -176,7 +194,7 @@ function calculation(num1, operator, num2) {
   }
 }
 
-equalBtn.addEventListener("click", () => {
+const equal = () => {
   let num1 = Number(previousInput);
   let num2 = Number(currentInput);
   para.innerText = displayInput;
@@ -189,8 +207,19 @@ equalBtn.addEventListener("click", () => {
   displayInput = String(result);
   currentInput = String(result);
   previousInput = "";
-  decimal = true;
+  for(let char of currentInput) {
+    if (char === ".") {
+      decimal = false;
+      break;
+    } else {
+      decimal = true;
+    }
+  }
   operator = null;
+}
+
+equalBtn.addEventListener("click", () => {
+  equal();
 });
 
 document.addEventListener("keydown", (event) => {
@@ -208,13 +237,7 @@ document.addEventListener("keydown", (event) => {
   ) {
     handleNumber(key);
   } else if (key === "0") {
-    if (currentInput !== "0") {
-      handleNumber("0");
-    }
-  } else if (key === "00") {
-    if (currentInput !== "" && currentInput !== "0") {
-      handleNumber("00");
-    }
+    zeroFun();
   } else if (
     key === "%" ||
     key === "/" ||
@@ -227,39 +250,13 @@ document.addEventListener("keydown", (event) => {
       handleOperator(operator);
     }
   } else if (key === ".") {
-    if (decimal) {
-      if (currentInput === "") {
-        handleNumber("0.");
-      } else {
-        handleNumber(".");
-      }
-    }
-    decimal = false;
+    dotFun();
   } else if (key === "Backspace") {
     backspace();
   } else if (key === "Enter") {
-    let num1 = Number(previousInput);
-    let num2 = Number(currentInput);
-    para.innerText = displayInput;
-    let reselt;
-    if (currentInput !== "" && previousInput !== "") {
-      result = calculation(num1, operator, num2);
-      input.value = result;
-    }
-
-    displayInput = String(result);
-    currentInput = String(result);
-    previousInput = "";
-    decimal = true;
-    operator = null;
+    equal();
   } else if (key === " ") {
-    currentInput = "";
-    previousInput = "";
-    decimal = true;
-    displayInput = "";
-    operator = null;
-    display(displayInput);
-    para.innerText = "";
+    allClear();
   }
 });
 
