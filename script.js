@@ -195,27 +195,25 @@ function calculation(num1, operator, num2) {
 }
 
 const equal = () => {
-  let num1 = Number(previousInput);
-  let num2 = Number(currentInput);
-  para.innerText = displayInput;
-  let result;
   if (currentInput !== "" && previousInput !== "") {
-    result = calculation(num1, operator, num2);
+    let num1 = Number(previousInput);
+    let num2 = Number(currentInput);
+    para.innerText = displayInput;
+    let result = calculation(num1, operator, num2);
     input.value = result;
-  }
-
-  displayInput = String(result);
-  currentInput = String(result);
-  previousInput = "";
-  for(let char of currentInput) {
-    if (char === ".") {
-      decimal = false;
-      break;
-    } else {
-      decimal = true;
+    displayInput = String(result);
+    currentInput = String(result);
+    previousInput = "";
+    for(let char of currentInput) {
+      if (char === ".") {
+        decimal = false;
+        break;
+      } else {
+        decimal = true;
+      }
     }
+    operator = null;
   }
-  operator = null;
 }
 
 equalBtn.addEventListener("click", () => {
