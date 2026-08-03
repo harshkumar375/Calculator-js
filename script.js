@@ -177,7 +177,7 @@ function calculation(num1, operator, num2) {
       if (num2 !== 0) {
         return num1 / num2;
       } else {
-        return "Divide by zero";
+        return "Cannot divide by zero";
       }
       break;
     case "*":
@@ -223,7 +223,7 @@ equalBtn.addEventListener("click", () => {
 });
 
 document.addEventListener("keydown", (event) => {
-  let key = event.key;
+  const key = event.key;
   if (
     key === "1" ||
     key === "2" ||
