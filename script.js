@@ -39,12 +39,11 @@ document.querySelectorAll(".number-btn").forEach((btn) => {
   });
 });
 
-
 const zeroFun = () => {
   if (currentInput !== "0") {
     handleNumber("0");
   }
-}
+};
 
 zeroBtn.addEventListener("click", () => {
   zeroFun();
@@ -54,7 +53,7 @@ const dubleZeroFun = () => {
   if (currentInput !== "" && currentInput !== "0") {
     handleNumber("00");
   }
-}
+};
 
 dblZeroBtn.addEventListener("click", () => {
   dubleZeroFun();
@@ -69,14 +68,13 @@ const dotFun = () => {
     }
   }
   decimal = false;
-}
+};
 
 dotBtn.addEventListener("click", () => {
   dotFun();
 });
 
 // Special button
-
 
 const allClear = () => {
   currentInput = "";
@@ -86,7 +84,7 @@ const allClear = () => {
   operator = null;
   display(displayInput);
   para.innerText = "";
-}
+};
 
 acBtn.addEventListener("click", () => {
   allClear();
@@ -204,7 +202,7 @@ const equal = () => {
     displayInput = String(result);
     currentInput = String(result);
     previousInput = "";
-    for(let char of currentInput) {
+    for (let char of currentInput) {
       if (char === ".") {
         decimal = false;
         break;
@@ -214,7 +212,7 @@ const equal = () => {
     }
     operator = null;
   }
-}
+};
 
 equalBtn.addEventListener("click", () => {
   equal();
@@ -261,12 +259,40 @@ document.addEventListener("keydown", (event) => {
 let themeBtn = document.querySelector(".theme-btn");
 let changeTheme = document.querySelectorAll(".change-theme");
 
-themeBtn.addEventListener("click", () => {
-  changeTheme.forEach((changeTheme) => {
-    changeTheme.classList.toggle("light");
-  });
 
-  if(document.body.classList.contains("light")) {
+const setDarkTheme = () => {
+  changeTheme.forEach((changeTheme) => {
+    changeTheme.classList.remove("light");
+  });
+};
+
+const setLightTheme = () => {
+  changeTheme.forEach((changeTheme) => {
+    changeTheme.classList.add("light");
+  });
+};
+
+if (localStorage.getItem("theme") == null) {
+  localStorage.setItem("theme", document.body.classList[1]);
+} else if (localStorage.getItem("theme") === "light") {
+  setLightTheme();
+  themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+} else {
+  setDarkTheme();
+  themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+}
+
+themeBtn.addEventListener("click", () => {
+  let theme = localStorage.getItem("theme");
+  if (theme === "light") {
+    setDarkTheme();
+    localStorage.setItem("theme", "dark");
+  } else {
+    setLightTheme();
+    localStorage.setItem("theme", "light");
+  }
+
+  if (document.body.classList.contains("light")) {
     themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
   } else {
     themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
