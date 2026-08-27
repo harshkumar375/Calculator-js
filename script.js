@@ -14,34 +14,27 @@ let input = document.querySelector("input");
 
 let para = document.querySelector(".input-text .data");
 
-let currentInput = "";
-let previousInput = "";
-let operator = null;
 let displayInput = "";
-let decimal = true;
+let decimal = false;
 
 const display = (value) => {
   displayInput += value;
   input.value = displayInput;
 };
-
-const handleNumber = (value) => {
-  currentInput += value;
-  display(value);
-};
-
 // Number button
 
 document.querySelectorAll(".number-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
     let value = btn.innerText;
-    handleNumber(value);
+    display(value);
   });
 });
 
+// Zero button
+
 const zeroFun = () => {
-  if (currentInput !== "0") {
-    handleNumber("0");
+  if (displayInput !== "0") {
+    display("0");
   }
 };
 
@@ -49,9 +42,11 @@ zeroBtn.addEventListener("click", () => {
   zeroFun();
 });
 
+// Double Zero button
+
 const dubleZeroFun = () => {
-  if (currentInput !== "" && currentInput !== "0") {
-    handleNumber("00");
+  if (displayInput !== "" && displayInput !== "0") {
+    display("00");
   }
 };
 
@@ -59,29 +54,28 @@ dblZeroBtn.addEventListener("click", () => {
   dubleZeroFun();
 });
 
+// Dot button
+
 const dotFun = () => {
-  if (decimal) {
-    if (currentInput === "") {
-      handleNumber("0.");
+  if (!decimal) {
+    if (displayInput === "") {
+      display("0.");
     } else {
-      handleNumber(".");
+      display(".");
     }
   }
-  decimal = false;
+  decimal = true;
 };
 
 dotBtn.addEventListener("click", () => {
   dotFun();
 });
 
-// Special button
+// All Clear button
 
 const allClear = () => {
-  currentInput = "";
-  previousInput = "";
-  decimal = true;
+  decimal = false;
   displayInput = "";
-  operator = null;
   display(displayInput);
   para.innerText = "";
 };
@@ -90,29 +84,20 @@ acBtn.addEventListener("click", () => {
   allClear();
 });
 
+// Backspace button
+
 function backspace() {
-  let delchar = displayInput[displayInput.length - 1];
-  currentInput = currentInput.slice(0, -1);
   displayInput = displayInput.slice(0, -1);
   input.value = displayInput;
-  for (let char of currentInput) {
+  let lastString = displayInput.split(/[+\-*%/]/);
+  decimal = false;
+  for (let char of lastString[lastString.length-1]) {
     if (char === ".") {
-      decimal = false;
+      decimal = true;
       break;
     } else {
-      decimal = true;
+      decimal = false;
     }
-  }
-  if (
-    delchar === "%" ||
-    delchar === "/" ||
-    delchar === "*" ||
-    delchar === "-" ||
-    delchar === "+"
-  ) {
-    currentInput = previousInput;
-    previousInput = "";
-    operator = null;
   }
 }
 
@@ -123,94 +108,61 @@ backspaceBtn.addEventListener("click", () => {
 // Operator button
 
 const handleOperator = (operator) => {
-  previousInput = currentInput;
-  currentInput = "";
-  decimal = true;
+  decimal = false;
   display(operator);
 };
 
 modulusBtn.addEventListener("click", () => {
-  if (operator === null && (currentInput !== "" || previousInput !== "")) {
-    operator = "%";
-    handleOperator(operator);
+  if (displayInput !== "") {
+    handleOperator("%");
   }
 });
 
 divideBtn.addEventListener("click", () => {
-  if (operator === null && (currentInput !== "" || previousInput !== "")) {
-    operator = "/";
-    handleOperator(operator);
+  if (displayInput !== "") {
+    handleOperator("/");
   }
 });
 
 mulBtn.addEventListener("click", () => {
-  if (operator === null && (currentInput !== "" || previousInput !== "")) {
-    operator = "*";
-    handleOperator(operator);
+  if (displayInput !== "") {
+    handleOperator("*");
   }
 });
 
 subBtn.addEventListener("click", () => {
-  if (operator === null && (currentInput !== "" || previousInput !== "")) {
-    operator = "-";
-    handleOperator(operator);
+  if (displayInput !== "") {
+    handleOperator("-");
   }
 });
 
 addBtn.addEventListener("click", () => {
-  if (operator === null && (currentInput !== "" || previousInput !== "")) {
-    operator = "+";
-    handleOperator(operator);
+  if (displayInput !== "") {
+    handleOperator("+");
   }
 });
 
-// Result button
-
-function calculation(num1, operator, num2) {
-  switch (operator) {
-    case "%":
-      return num1 % num2;
-      break;
-    case "/":
-      if (num2 !== 0) {
-        return num1 / num2;
-      } else {
-        return "Cannot divide by zero";
-      }
-      break;
-    case "*":
-      return num1 * num2;
-      break;
-    case "-":
-      return num1 - num2;
-      break;
-    case "+":
-      return num1 + num2;
-      break;
-    default:
-      break;
-  }
-}
+// Equal button
 
 const equal = () => {
-  if (currentInput !== "" && previousInput !== "") {
-    let num1 = Number(previousInput);
-    let num2 = Number(currentInput);
-    para.innerText = displayInput;
-    let result = calculation(num1, operator, num2);
-    input.value = result;
-    displayInput = String(result);
-    currentInput = String(result);
-    previousInput = "";
-    for (let char of currentInput) {
-      if (char === ".") {
-        decimal = false;
-        break;
-      } else {
-        decimal = true;
+  if (displayInput !== "") {
+    let result;
+    try {
+      result = eval(displayInput);
+      para.innerText = displayInput;
+      input.value = result;
+      displayInput = String(result);
+      for (let char of displayInput) {
+        if (char === ".") {
+          decimal = true;
+          break;
+        } else {
+          decimal = false;
+        }
       }
+    } catch (error) {
+      input.value = error.name;
     }
-    operator = null;
   }
 };
 
@@ -231,7 +183,7 @@ document.addEventListener("keydown", (event) => {
     key === "8" ||
     key === "9"
   ) {
-    handleNumber(key);
+    display(key);
   } else if (key === "0") {
     zeroFun();
   } else if (
@@ -241,9 +193,8 @@ document.addEventListener("keydown", (event) => {
     key === "-" ||
     key === "+"
   ) {
-    if (operator === null && (currentInput !== "" || previousInput !== "")) {
-      operator = key;
-      handleOperator(operator);
+    if (displayInput !== "") {
+      handleOperator(key);
     }
   } else if (key === ".") {
     dotFun();
@@ -258,7 +209,6 @@ document.addEventListener("keydown", (event) => {
 
 let themeBtn = document.querySelector(".theme-btn");
 let changeTheme = document.querySelectorAll(".change-theme");
-
 
 const setDarkTheme = () => {
   changeTheme.forEach((changeTheme) => {
